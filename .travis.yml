@@ -1,0 +1,18 @@
+sudo: required
+services:
+    - docker
+env:
+    - TAG=0.1
+    - DOCKER_ID=jonathanhs
+script:
+    - docker build -t $DOCKER_ID/pyroid-docker .
+    - docker tag $DOCKER_ID/pyroid-docker $DOCKER_ID/pyroid-docker:$TAG
+after_success:
+    - docker images
+before_deploy:
+    - echo $DOCKER_KEY | docker login -u $DOCKER_ID --password-stdin
+deploy:
+    provider: script
+    script: docker push $DOCKER_ID/pyroid-docker
+    on:
+        branch: master
