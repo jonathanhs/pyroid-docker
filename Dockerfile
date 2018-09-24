@@ -16,17 +16,13 @@ LABEL maintainer="jonathan.hadisuryo@gmail.com"
 ENV LANG="C.UTF-8"
 ENV LC_ALL="C.UTF-8"
 
-# update and install required packages
+# copy required configuration and packages
+COPY config /tmp
 COPY --from=builder /tmp/get-pip.py /tmp/get-pip.py
 COPY --from=builder /tmp/nginx_signing.key /tmp/nginx_signing.key
-RUN apt-key add /tmp/nginx_signing.key \
-    && add-apt-repository "deb http://nginx.org/packages/ubuntu/ bionic nginx" \
-    && apt-get update && apt-get install -y nginx python3-distutils \
-    && apt-get -y autoremove && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && python3 /tmp/get-pip.py \
-    && pip install pipenv \
-    && rm /tmp/get-pip.py /tmp/nginx_signing.key
+
+# set required configuration and packages
+RUN sh /tmp/setup.sh && rm /tmp/setup.sh
 
 # expose ports
 EXPOSE 80 443
