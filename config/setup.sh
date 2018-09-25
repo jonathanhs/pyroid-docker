@@ -27,8 +27,7 @@ cp /tmp/nginx/default.conf /etc/nginx/conf.d/default.conf
 # 4. --------------------------------------------------------------------------
 cd $HOME/django_app && cp /tmp/django/requirements.txt .
 pipenv install -r requirements.txt
-django-admin startproject app
-cp -R /tmp/django/app/* app/app
+pipenv run django-admin startproject app && cp -R /tmp/django/app/* app/app
 
 # 5. --------------------------------------------------------------------------
 cd $HOME/flask_app && cp /tmp/flask/requirements.txt .
