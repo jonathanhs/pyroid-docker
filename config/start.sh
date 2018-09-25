@@ -12,4 +12,4 @@ elif [ $1 = flask ]; then
 fi
 
 # start nginx server
-nginx -g daemon off;
+nginx -g 'daemon off;'
